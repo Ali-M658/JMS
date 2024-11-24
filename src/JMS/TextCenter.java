@@ -27,6 +27,7 @@ public class TextCenter extends JFrame
     private JLabel textLabel;
     private UIMessaging messaging = new UIMessaging();
     private Client client;
+
     String phoneNumber;
     String otherPhoneNumber;
     String areaCode;
