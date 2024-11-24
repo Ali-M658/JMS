@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Messaging" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="JMS.UI.UIMessaging" />
+    <module name="untitled" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

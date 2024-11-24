@@ -5,8 +5,9 @@ import java.net.HttpURLConnection;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 
-public class SendData
+public class GetAuthToken
 {
     private static ArrayList<String> save = new ArrayList<>();
     public static String getAuthToken(String applicationKeyId, String applicationKey) {
@@ -20,6 +21,7 @@ public class SendData
             // Set the Authorization header with the base64 encoded credentials
             String credentials = applicationKeyId + ":" + applicationKey;
             String encodedCredentials = java.util.Base64.getEncoder().encodeToString(credentials.getBytes());
+            System.console().println(encodedCredentials);
             connection.setRequestProperty("Authorization", "Basic " + encodedCredentials);
 
             // Get the response from the server
@@ -34,6 +36,7 @@ public class SendData
             // The response will contain the auth token and other information
             String responseString = response.toString();
             String authToken = parseAuthTokenFromResponse(responseString);
+            System.console().writer().write(authToken+"This is authtoken");
             save.add(authToken);
             return authToken;  // Return the extracted auth token
 
@@ -58,7 +61,9 @@ public class SendData
         return authToken;
     }
     public static boolean processData() {
-        if (save.get(0) != null) {
+        if (save.getFirst() != null) {
+            System.out.print(save.getFirst());
+            System.console().writer().println("Line above this is authtoken");
             return true;
         }
         return false;

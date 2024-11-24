@@ -1,7 +1,6 @@
-package JMS;
+package JMS.UI;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class UIComponents {
     public JTextField yourPhoneNumberField = new JTextField();

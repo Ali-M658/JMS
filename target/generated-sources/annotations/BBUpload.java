@@ -7,10 +7,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import com.backblaze.b2.client.B2StorageClient;
+import com.backblaze.b2.client.B2StorageClientFactory;
+import com.backblaze.b2.client.exceptions.B2Exception;
+import com.backblaze.b2.client.structures.*;
 
 public class BBUpload
 {
-    public BBUpload(String authToken,String filePath, String fileName, String bucketId)
+    public BBUpload(String appKeyID, String bucketId)
     {
         try
         {

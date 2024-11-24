@@ -1,40 +1,47 @@
-package JMS;
+package JMS.config;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputFilter.Config;
-import java.util.Properties;
-import com.fasterxml.jackson.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import JMS.UI.UIComponents;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SaveConfig
 {
-    StringBuilder identification;
-    String phonenumber;
-    boolean saveOrLoad;
-    private ObjectMapper objectMapper;
+    String identification;
+    String encoded;
+    static String areaCode;
+    String otherPhone;
 
-    public SaveConfig(String phoneNumber, StringBuilder id, boolean saveOrLoad)
+    boolean saveOrLoad;
+private ObjectMapper objectMapper = new ObjectMapper();
+
+    public SaveConfig(String encoded, String otherPhoneNumber, boolean saveOrLoad)
     {
-        this.phonenumber = phoneNumber;
-        this.identification = id;
+        this.encoded = encoded;
         this.saveOrLoad = saveOrLoad;
+        this.otherPhone = otherPhoneNumber;
+        config(saveOrLoad);
+    }
+    public static void areaCodeConstruct(String areaCodee)
+    {
+        areaCode = areaCodee;
     }
     public void config(boolean saveOrLoad)
     { // IF saveorload is true it will load, if false, it will save
         if (saveOrLoad)
         {
-            loadConfig("C:\\Users\\Public\\Public Documents");
+            loadConfig("C:\\Users\\Public\\Public_Documents.json\\");
         }
         else
         {
-            saveConfig("C:\\Users\\Public\\Public Documents");
+            saveConfig("C:\\Users\\Public\\Public_Documents.json\\");
         }
     }
 
-    private void saveConfig(String path)
+    public void loadConfig(String path)
     {
         try
         {
@@ -43,13 +50,19 @@ public class SaveConfig
         catch (IOException e)
         {
             System.err.println("Error loading config: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-    private void loadConfig(String path)
+    public void saveConfig(String path)
     {
         try
         {
-            Config config = new Config(identification, phonenumber)
+            System.out.println("SaveConfig was executed!");
+            JMS.config.Config config = new JMS.config.Config(encoded, otherPhone, areaCode);
+            System.out.println("Config stuff: "+ config.getEncoded());
+            System.out.println("Area Code stuff: "+ config.getAreaCode());
+            System.out.println("OtherPhoneNumber stuff: "+ config.getOtherPhoneNumber());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), config);
         }
         catch (IOException e)
         {
@@ -57,3 +70,4 @@ public class SaveConfig
         }
     }
 }
+

@@ -1,4 +1,6 @@
-package JMS;
+package JMS.UI;
+
+import JMS.ActionHandlers;
 
 import javax.swing.*;
 
