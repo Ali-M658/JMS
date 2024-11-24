@@ -1,0 +1,21 @@
+// hello-jackson-objectmapper/build.gradle (example)
+
+apply plugin: 'java'
+
+repositories {
+mavenCentral()
+}
+
+dependencies {
+compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+compile 'org.projectlombok:lombok:1.16.6'
+testCompile 'junit:junit:4.11'
+}
+
+defaultTasks 'clean', 'build'
+
+task wrapper(type: Wrapper) {
+gradleVersion = '2.0'
+}
