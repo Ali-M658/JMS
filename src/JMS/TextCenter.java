@@ -6,6 +6,7 @@ import JMS.SendData.GetAuthToken;
 //import JMS.SendData.UploadToCloud;
 import JMS.ServerClient.Client;
 import JMS.ServerClient.MessageBuffer;
+import JMS.ServerClient.Server;
 import JMS.UI.UIMessaging;
 
 import javax.swing.*;
@@ -33,10 +34,12 @@ public class TextCenter extends JFrame
     String areaCode;
     String otherAreaCode;
     String serverAddress;
-    int serverPort;
+    private MessageBuffer messageBuffer;
+    int serverPort = PortSaver.port;
 
     public TextCenter(String PH, String OPH, String areaCode, String otherAreaCode, String serverAddress, int serverPort)
     {
+        System.out.println("Text center line 40");
         this.phoneNumber = PH;
         this.otherPhoneNumber = OPH;
         this.areaCode = areaCode;
@@ -44,6 +47,8 @@ public class TextCenter extends JFrame
         this.client = new Client(serverAddress, serverPort);
         client.connectToServer();
         client.setMessageListener(this::appendRecievedMessage);
+        Server server = new Server(phoneNumber, otherPhoneNumber);
+        server.trySomething();
 
         setTitle("Text Area");
         setSize(900,500);
@@ -61,7 +66,8 @@ public class TextCenter extends JFrame
         add(scrollPane,BorderLayout.CENTER);
         //adding scroll pane to same area of text
 
-        textLabel = new JLabel("You are texting ");
+        textLabel = new JLabel("You are texting "+otherPhoneNumber);
+        System.out.println("Buttons were added?");
         add(textLabel,BorderLayout.SOUTH);
 
         String encoded = StringEncodeDecode.encode(phoneNumber,areaCode);
@@ -71,13 +77,18 @@ public class TextCenter extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 String input = textField.getText();
-
+                messageBuffer = new MessageBuffer();
                 if (!input.isEmpty())
                 {
                     sendTextToLogic(input);
                     areaToText.append("You: "+ input + "\n"); //put input to text area
                     textField.setText(""); //Make it nothing after entered
                     textList.add(input);
+                    if (MessageBuffer.message.size()>=0)
+                    {
+                        areaToText.append("Other: "+ MessageBuffer.message.get(0) + "\n");
+                        MessageBuffer.message.remove(0);
+                    }
                     client.sendMessage(input);
                 }
             }

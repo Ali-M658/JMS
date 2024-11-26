@@ -8,14 +8,7 @@ public class GeneratePort
     static int stringToInt;
     public static int randomNum()
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i <=6; i++)
-        {
-            int rand = random.nextInt(27);
-            stringBuilder.append(rand);
-        }
-        String string = stringBuilder.toString();
-        stringToInt = Integer.parseInt(string);
+        stringToInt = random.nextInt(1,65535);
         return stringToInt;
     }
 

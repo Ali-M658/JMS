@@ -9,7 +9,7 @@ public class PortSaver
     {
         this.port = port;
     }
-    public int getPort()
+    public static int getPort()
     {
         return port;
     }

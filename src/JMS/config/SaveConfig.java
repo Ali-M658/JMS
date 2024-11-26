@@ -50,7 +50,6 @@ private ObjectMapper objectMapper = new ObjectMapper();
         catch (IOException e)
         {
             System.err.println("Error loading config: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     public void saveConfig(String path)

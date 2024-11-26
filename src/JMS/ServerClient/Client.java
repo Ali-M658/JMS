@@ -25,6 +25,7 @@ public class Client {
         {
             socket = new Socket(serverAddress, serverPort);
             outputStream = new DataOutputStream(socket.getOutputStream());
+            System.out.println("Output is initalized!");
             inputStream = new DataInputStream(socket.getInputStream());
         System.out.println("Server address: "+serverAddress+":"+serverPort);
 

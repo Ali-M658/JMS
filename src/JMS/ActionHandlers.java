@@ -28,7 +28,7 @@ public class ActionHandlers
 
     public ActionHandlers(JFrame frame, UIComponents components)
     {
-        configFile = new File("C:\\Users\\Public\\Public_Documents.json");
+        configFile = new File("C:\\Users\\Public\\Public_Documents.json\\");
         this.frame = frame;
         this.components = components;
     }
@@ -110,6 +110,7 @@ public class ActionHandlers
         }
         else if (nextCounter == 2) //uses elif statements
         {
+            System.out.println("NExtcounter is: "+nextCounter);
             String yourPhone = components.yourPhoneNumberField.getText();
             String otherPhone = components.otherPhoneNumberField.getText();
             String areaCode = components.yourAreaCode.getText();
@@ -117,9 +118,9 @@ public class ActionHandlers
             String otherAreaCode = components.otherAreaCode.getText();
             String encoded = encodeForFile(yourPhone, areaCode);
             String ipAddress = "10.0.0.173";
-            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
-            //Saves it
             SaveConfig configure = new SaveConfig(encoded, otherPhone, false);
+            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port);
+            //Saves it
             frame.dispose();
         }
     }

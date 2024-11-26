@@ -5,11 +5,16 @@ import java.util.List;
 
 public class MessageBuffer
 {
-    List<String> message = new ArrayList<>();
-    public MessageBuffer(String message)
+    public static List<String> message = new ArrayList<>();
+    public MessageBuffer()
     {
-        this.message.add(message);
     }
+
+    public static void addMessage(String theMessage)
+    {
+        message.add(theMessage);
+    }
+
     public String getMessage(int index)
     {
         return message.get(index);

@@ -1,6 +1,9 @@
 package JMS.UI;
 
 import JMS.ActionHandlers;
+import JMS.PortSaver;
+import JMS.ServerClient.GeneratePort;
+
 
 import javax.swing.*;
 
@@ -24,7 +27,8 @@ public class UIMessaging extends JFrame {
         // Add listeners
         layoutManager.attachResizeListener();
         handlers.attachActionListeners();
-
+        int port = GeneratePort.randomNum();
+        new PortSaver(port);
         setVisible(true);
     }
 
