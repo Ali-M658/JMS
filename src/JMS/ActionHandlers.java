@@ -1,9 +1,10 @@
 package JMS;
 
 
+import JMS.TextCenter.TextCenter;
+
 import JMS.UI.UIComponents;
 import JMS.config.SaveConfig;
-import JMS.PortSaver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ActionHandlers
 {
@@ -23,7 +23,8 @@ public class ActionHandlers
     private final JFrame frame;
     private final UIComponents components;
     private int nextCounter = 0;
-    private int port = PortSaver.port;
+    private int port;
+
     public List<String> phSaver = new ArrayList<String>();
 
     public ActionHandlers(JFrame frame, UIComponents components)
@@ -31,6 +32,8 @@ public class ActionHandlers
         configFile = new File("C:\\Users\\Public\\Public_Documents.json\\");
         this.frame = frame;
         this.components = components;
+        this.port = port;
+        System.out.println("The port is: "+ port);
     }
 
 
@@ -92,11 +95,14 @@ public class ActionHandlers
             String encoded = jsonNode.get("encoded").asText();
             String yourPhone = StringEncodeDecode.decode(encoded, areaCode);
             phSaver.add(yourPhone);
+            String[] phones = {yourPhone,otherPhone};
+            int port = JMS.ServerClient.GeneratePort.getSharedPortForConversation(phones);
             System.out.println("phone number decoded "+ yourPhone);
             String otherAreaCode = components.otherAreaCode.getText();
             SaveConfig config1 = new SaveConfig(encoded,otherPhone, true);
             String ipAddress = "10.0.0.173";
-            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode,ipAddress,port).setVisible(true);
+            System.out.println("Port before being passes down: "+ port);
+            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
             frame.dispose();
         }
     }
@@ -119,7 +125,7 @@ public class ActionHandlers
             String encoded = encodeForFile(yourPhone, areaCode);
             String ipAddress = "10.0.0.173";
             SaveConfig configure = new SaveConfig(encoded, otherPhone, false);
-            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port);
+            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
             //Saves it
             frame.dispose();
         }
@@ -143,5 +149,4 @@ public class ActionHandlers
         components.otherAreaCodeLabel.setVisible(isSecondStep);
         components.otherAreaCode.setVisible(isSecondStep);
     }
-
 }

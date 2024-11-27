@@ -16,9 +16,10 @@ public class UIMessaging extends JFrame {
         setLayout(null);
         setLocationRelativeTo(null);
 
-        // Initialize UI components and layout
+
         UIComponents components = new UIComponents();
         LayoutManager layoutManager = new LayoutManager(this, components);
+
         ActionHandlers handlers = new ActionHandlers(this, components);
         //components, layout manager, handlers
         // Add components to the frame
@@ -27,8 +28,7 @@ public class UIMessaging extends JFrame {
         // Add listeners
         layoutManager.attachResizeListener();
         handlers.attachActionListeners();
-        int port = GeneratePort.randomNum();
-        new PortSaver(port);
+
         setVisible(true);
     }
 

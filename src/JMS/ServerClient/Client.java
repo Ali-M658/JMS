@@ -23,6 +23,7 @@ public class Client {
     public void connectToServer() {
         try
         {
+            //initalizing socket and dataoutptu\ strea,
             socket = new Socket(serverAddress, serverPort);
             outputStream = new DataOutputStream(socket.getOutputStream());
             System.out.println("Output is initalized!");
@@ -40,8 +41,12 @@ public class Client {
     {
         try
         {
+            System.out.println("Trying the socket...");
+            socket = new Socket(serverAddress, serverPort);
+            System.out.println("Trying the outputstream...");
+            outputStream = new DataOutputStream(socket.getOutputStream());
             outputStream.writeUTF(message);
-            System.out.println("MEssage sent to other server: "+ message);
+            System.out.println("Message sent to other server: "+ message);
         } catch (IOException e) {
             System.err.println("Error sending the messages: " + e.getMessage());
         }
