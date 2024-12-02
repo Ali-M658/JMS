@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FileOperations {
 
-    public static void saveToFile(String phoneNumber, ArrayList<String> textList) {
+    public static void saveToFile(String phoneNumber, String[] textList) {
         String directory = "C:\\Users\\Public\\";
         File file = new File(directory + phoneNumber);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {

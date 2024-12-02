@@ -26,27 +26,33 @@ public class Client {
             //initalizing socket and dataoutptu\ strea,
             socket = new Socket(serverAddress, serverPort);
             outputStream = new DataOutputStream(socket.getOutputStream());
-            System.out.println("Output is initalized!");
             inputStream = new DataInputStream(socket.getInputStream());
-        System.out.println("Server address: "+serverAddress+":"+serverPort);
 
-        //New thread for messages
-            new Thread(this::listenForMessages).start();
-        } catch (IOException e) {
+            System.out.println("Connected to server at " + serverAddress + ":" + serverPort);
+            System.out.println("Output is initalized!");
+
+            } catch (IOException e) {
             System.err.println("error to server" + e.getMessage());
         }
     }
-
+    public void messageListenThreads()
+    {
+        new Thread(this::listenForMessages).start();
+    }
     public void sendMessage(String message)
     {
         try
         {
-            System.out.println("Trying the socket...");
-            socket = new Socket(serverAddress, serverPort);
-            System.out.println("Trying the outputstream...");
-            outputStream = new DataOutputStream(socket.getOutputStream());
-            outputStream.writeUTF(message);
-            System.out.println("Message sent to other server: "+ message);
+            if (socket != null && !socket.isClosed()) {
+                System.out.println("Trying the socket...");
+                System.out.println("Trying the outputstream...");
+                outputStream.writeUTF(message);
+
+                System.out.println("Message sent to other server: " + message);
+            }
+            else {
+                System.err.println("Socket is closed so unable to send message");
+            }
         } catch (IOException e) {
             System.err.println("Error sending the messages: " + e.getMessage());
         }
@@ -54,29 +60,34 @@ public class Client {
 
     private void listenForMessages()
     {
-        try
+        new Thread(() ->
         {
-            while (true)
-            {
-                String gotMessage = inputStream.readUTF();
-                if (messageListener != null)
-                {
-                    messageListener.onMessageRecieved(gotMessage);
+            try {
+                while (true) {
+                    String gotMessage = inputStream.readUTF();
+                    if (messageListener != null) {
+                        messageListener.onMessageRecieved(gotMessage);
+                        System.out.println("The message was reciedved" + gotMessage);
+                    } else {
+                        System.out.println("Inputs are null");
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("Error listening for the messages: " + e.getMessage());
             }
-        }
-        catch (IOException e)
-        {
-            System.err.println("Error listening for the messages: " + e.getMessage());
-        }
+        }).start();
     }
     public void setMessageListener(MessageListener listener)
     {
         this.messageListener = listener;
     }
-
+    public boolean isConnected()
+    {
+        return socket != null && socket.isConnected() && !socket.isClosed();
+    }
     public interface MessageListener
     {
         void onMessageRecieved(String message);
     }
 }
+

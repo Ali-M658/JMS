@@ -32,7 +32,7 @@ public class ActionHandlers
         configFile = new File("C:\\Users\\Public\\Public_Documents.json\\");
         this.frame = frame;
         this.components = components;
-        this.port = port;
+        this.port = 0;
         System.out.println("The port is: "+ port);
     }
 
@@ -45,7 +45,11 @@ public class ActionHandlers
             {
                 nextCounter++;
                 System.out.println("next is clicked");
-                handleNextAction();
+                try {
+                    handleNextAction();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -102,13 +106,12 @@ public class ActionHandlers
             SaveConfig config1 = new SaveConfig(encoded,otherPhone, true);
             String ipAddress = "10.0.0.173";
             System.out.println("Port before being passes down: "+ port);
-            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
             frame.dispose();
+            new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
         }
     }
 
-    private void handleNextAction()
-    {
+    private void handleNextAction() throws IOException {
         if (nextCounter == 1)
         {
             toggleVisibility(false, true); //using instance booleanse to toggle it
@@ -123,6 +126,8 @@ public class ActionHandlers
             SaveConfig.areaCodeConstruct(areaCode);
             String otherAreaCode = components.otherAreaCode.getText();
             String encoded = encodeForFile(yourPhone, areaCode);
+            String[] phones = {yourPhone,otherPhone};
+            int port = JMS.ServerClient.GeneratePort.getSharedPortForConversation(phones);
             String ipAddress = "10.0.0.173";
             SaveConfig configure = new SaveConfig(encoded, otherPhone, false);
             new TextCenter(yourPhone, otherPhone, areaCode, otherAreaCode, ipAddress, port).setVisible(true);
