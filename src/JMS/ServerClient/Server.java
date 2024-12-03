@@ -33,9 +33,10 @@ public class Server
         System.out.println("line 4: Server address set: " + IpAddress);
         this.port = port;
         System.out.println("line 5: Port set: " + port);
-        if (!isPortInUse(port)) {// if port is free
+        if (isPortInUse(port) == false) {// if port is free
             serverSocket = new ServerSocket(port);
             serverSocket.accept();
+            System.out.println("Port was free");
         }
     }
     public boolean isPortInUse(int port) {
@@ -49,42 +50,47 @@ public class Server
     }
     public void trySomething() throws IOException {
         System.out.println("line 6: trySomething method is called.");
-        try
-        {
+        try {
             System.out.println("line 7: Server is on port " + port);
 
             new Thread(this::processMessages).start();
             for (int i = 0; i < 2; i++) //Only 2 times
             {
+                if (isPortInUse(port)==false) { //if free
+                    System.out.println("line 8: Waiting for clients.");
+                    sock = serverSocket.accept();
+                    System.out.println("line 9: Client accepted.");
+                    ClientHandler clientHandler = new ClientHandler(sock);
+                    System.out.println("line 10: Added new client to the list. Current client count: ");
+                    clientHandler.start();
 
-                System.out.println("line 8: Waiting for clients.");
-                sock = new Socket(IpAddress,port);
-                System.out.println("line 9: Client accepted.");
-                ClientHandler clientHandler = new ClientHandler(sock);
-                System.out.println("line 10: Added new client to the list. Current client count: ");
-                clientHandler.start();
+                    Client client = new Client(IpAddress, port);
+                    client.connectToServer();
+                }
+                else
+                {
+                    for (int z = 0; z < 2; z++) {
+
+                        sock = new Socket(IpAddress, port);
+                        System.out.println("line 12: Port is in use, connecting to server as client...");
+                        ClientHandler handler = new ClientHandler(sock);
+                        handler.start();
+                    }
+
+                    Client client = new Client(IpAddress, port);
+                    client.connectToServer();
+                }
             }
 
             System.out.println("line 11: Connecting to server as client...");
             //clients?
-            Client client = new Client(IpAddress, port);
-            client.connectToServer();
-        }
-        catch (IOException e)
+
+        } catch (IOException e)
         {
-            for (int i = 0; i < 2; i++)
-            {
-
-                sock = new Socket(IpAddress,port);
-                System.out.println("line 12: Port is in use, connecting to server as client...");
-                ClientHandler handler = new ClientHandler(sock);
-                handler.start();
-            }
-
-            Client client = new Client(IpAddress, port);
-            client.connectToServer();
+            e.getMessage();
         }
     }
+
     private void processMessages()
     {
         while (true)

@@ -29,7 +29,6 @@ public class MessageHandler {
 
         new Thread(this::processMessages).start();
 
-        client.messageListenThreads();
         System.out.println("MessageHandler initialized and listening for messages.");
     }
 

@@ -23,11 +23,13 @@ public class Client {
     public void connectToServer() {
         try
         {
-            //initalizing socket and dataoutptu\ strea,
+            //initalizing socket and OutPutStream
             socket = new Socket(serverAddress, serverPort);
+
             outputStream = new DataOutputStream(socket.getOutputStream());
             inputStream = new DataInputStream(socket.getInputStream());
-
+            boolean bool = socket.isClosed();
+            System.out.println("Is socket open: "+bool);
             System.out.println("Connected to server at " + serverAddress + ":" + serverPort);
             System.out.println("Output is initalized!");
 
@@ -46,12 +48,12 @@ public class Client {
             if (socket != null && !socket.isClosed()) {
                 System.out.println("Trying the socket...");
                 System.out.println("Trying the outputstream...");
-                outputStream.writeUTF(message);
 
                 System.out.println("Message sent to other server: " + message);
             }
             else {
                 System.err.println("Socket is closed so unable to send message");
+                outputStream.writeUTF(message);
             }
         } catch (IOException e) {
             System.err.println("Error sending the messages: " + e.getMessage());

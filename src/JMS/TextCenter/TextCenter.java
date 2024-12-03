@@ -25,7 +25,6 @@ public class TextCenter extends JFrame {
         Server server = new Server(PH,OPH,serverPort, serverAddress);
         server.trySomething(); //this is the reason for the exception
         this.client = new Client(serverAddress, serverPort);
-        client.connectToServer(); // It has to be before to initalize dataoutput stream
         System.out.println("The port passed to the server is : "+ serverPort);
         setTitle("Text Area");
         setSize(900, 500);
